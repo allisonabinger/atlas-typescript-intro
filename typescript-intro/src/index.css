@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .btn-playcontrols {
+        @apply inline-flex h-10 w-10 items-center justify-center whitespace-nowrap rounded-md  hover:outline hover:outline-2 hover:outline-vista-blue-600 disabled:opacity-50 disabled:outline-none
+    }
+
+}
