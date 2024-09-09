@@ -1,15 +1,15 @@
 // Cover Art Component (uses placeholder)
 
 type CovertArtProps = {
-    coverArtPath: string;
+    imageURL: string;
 }
 
 
-function CoverArt({ coverArtPath }: CovertArtProps) {
+function CoverArt({ imageURL }: CovertArtProps) {
   return (
     <div className="flex cover-art mb-6 w-full justify-center">
       <img
-        src={coverArtPath}
+        src={imageURL}
         alt="Current Album Cover"
         className="rounded-md md:w-400 md:h-400"
       />

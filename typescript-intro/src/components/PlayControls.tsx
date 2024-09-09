@@ -7,17 +7,21 @@ import repeatOneSVG from "../assets/repeatOne.svg";
 import shuffleSVG from "../assets/shuffle.svg";
 import pauseSVG from "../assets/pause.svg";
 import { useState } from "react";
+import { useMusicPlayer } from "../MusicPlayerContext";
+import { usePlaylistData } from "../hooks/usePlaylistData";
 
 function PlayControls() {
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [playbackMode, setPlaybackMode] = useState("repeat-all");
   const [playbackSVG, setPlaybackSVG] = useState(repeatSVG);
-  const [playStatus, setPlayStatus] = useState(true);
+
+  const { isPlaying, currentSong, playSong, togglePlay } =
+    useMusicPlayer();
+    const { data: playlist, loading } = usePlaylistData();
 
   function handlePlaybackToggle() {
-    console.log("toggled");
     if (playbackMode === "repeat-all") {
-        setPlaybackMode('repeat-one')
+      setPlaybackMode("repeat-one");
       setPlaybackSVG(repeatOneSVG);
     } else if (playbackMode === "repeat-one") {
       setPlaybackMode("shuffle");
@@ -29,17 +33,31 @@ function PlayControls() {
   }
 
   function togglePlayStatus() {
-    setPlayStatus((prevStatus) => !prevStatus);
+    togglePlay();
   }
 
   function togglePlaybackSpeed() {
     setPlaybackSpeed((prevSpeed) => {
-        if (prevSpeed < 3) {
-            return parseFloat((prevSpeed + 1).toFixed(2));
-        } else {
-            return 1;
-        }
+      if (prevSpeed < 3) {
+        return parseFloat((prevSpeed + 1).toFixed(2));
+      } else {
+        return 1;
+      }
     });
+  }
+
+  function playPrevious() {
+    const currentIndex = playlist.findIndex(song => song.id === currentSong?.id);
+    if (currentIndex > 0) {
+        playSong(playlist[currentIndex - 1]);
+    }
+  }
+
+  function playNext() {
+    const currentIndex = playlist.findIndex(song => song.id === currentSong?.id);
+    if (currentIndex >= 0 && currentIndex < playlist.length - 1) {
+        playSong(playlist[currentIndex + 1])
+    }
   }
 
   return (
@@ -49,23 +67,17 @@ function PlayControls() {
           {playbackSpeed}x
         </span>
       </button>
-      <button
-        className="btn-playcontrols"
-        disabled={playStatus}
-      >
+      <button className="btn-playcontrols" onClick={playPrevious} disabled={!currentSong || playlist.findIndex(song => song.id === currentSong.id) === 0}>
         <img src={backwardSVG} alt="Reverse Button" className="size-6" />
       </button>
-      <button
-        className="btn-playcontrols"
-        onClick={togglePlayStatus}
-      >
+      <button className="btn-playcontrols" onClick={togglePlayStatus}>
         <img
-          src={playStatus ? pauseSVG : playSVG}
+          src={isPlaying ? pauseSVG : playSVG}
           alt="Play Button"
           className="size-6"
         />
       </button>
-      <button className="btn-playcontrols">
+      <button className="btn-playcontrols" onClick={playNext}>
         <img src={forwardSVG} alt="Forward Button" className="size-6" />
       </button>
       <button className="btn-playcontrols" onClick={handlePlaybackToggle}>

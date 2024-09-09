@@ -1,6 +1,12 @@
 // PlayList Item Component
+type PlaylistItemProps = {
+    title: string;
+    artist: string;
+    duration: string;
+}
 
-function PlayListItem({ title, artist, length }) {
+
+function PlayListItem({ title, artist, duration }: PlaylistItemProps) {
   return (
     <div className="w-full mb-2 pr-3 flex justify-between font-medium">
       <div className="wrapper text-left text-sm">
@@ -8,7 +14,7 @@ function PlayListItem({ title, artist, length }) {
         <div className="text-butterfly-bush-950">{artist}</div>
       </div>
       <div className="length flex items-center">
-        <div className="text-sm text-butterfly-bush-950">{length}</div>
+        <div className="text-sm text-butterfly-bush-950">{duration}</div>
       </div>
     </div>
   );
