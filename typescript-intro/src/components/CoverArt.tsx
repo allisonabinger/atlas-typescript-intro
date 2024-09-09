@@ -1,12 +1,16 @@
 // Cover Art Component (uses placeholder)
-import PaintedInBlue from "../assets/PaintedInBlue.jpeg";
 
-function CoverArt() {
+type CovertArtProps = {
+    coverArtPath: string;
+}
+
+
+function CoverArt({ coverArtPath }: CovertArtProps) {
   return (
     <div className="flex cover-art mb-6 w-full justify-center">
       <img
-        src={PaintedInBlue}
-        alt="Placeholder Cover Art Image"
+        src={coverArtPath}
+        alt="Current Album Cover"
         className="rounded-md md:w-400 md:h-400"
       />
     </div>

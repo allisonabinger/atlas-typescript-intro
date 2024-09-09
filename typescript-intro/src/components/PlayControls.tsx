@@ -34,10 +34,10 @@ function PlayControls() {
 
   function togglePlaybackSpeed() {
     setPlaybackSpeed((prevSpeed) => {
-        if (prevSpeed < 2) {
-            return parseFloat((prevSpeed + 0.25).toFixed(2));
+        if (prevSpeed < 3) {
+            return parseFloat((prevSpeed + 1).toFixed(2));
         } else {
-            return 0.5;
+            return 1;
         }
     });
   }

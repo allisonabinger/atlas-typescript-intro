@@ -4,6 +4,7 @@ import PlayControls from "./PlayControls";
 import VolumeControl from "./VolumeControl";
 
 function CurrentlyPlaying() {
+
   return (
     <div className="currently-playing w-full p-4 justify-center">
       <CoverArt />
