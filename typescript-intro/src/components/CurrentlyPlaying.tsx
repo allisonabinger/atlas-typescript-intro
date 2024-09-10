@@ -7,13 +7,13 @@ import placeholderImage from "../assets/placeholder.svg"
 import { useEffect } from "react";
 
 function CurrentlyPlaying() {
-    const { currentSong, playlist, playSong } = useMusicPlayer();
+    const { currentSong, playlist, playNextSong } = useMusicPlayer();
 
     useEffect(() => {
         if(!currentSong) {
-            playSong(playlist[0])
+            playNextSong()
         }
-    }, [currentSong, playlist, playSong]);
+    }, [currentSong, playlist, playNextSong]);
 
 
   return (

@@ -1,54 +1,120 @@
 // Context for the currently playing song.
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { usePlaylistData } from "./hooks/usePlaylistData";
 
 type Song = {
-    id: number;
-    title: string;
-    artist: string;
-    genre: string;
-    duration: string;
-    cover: string;
-}
+  id: number;
+  title: string;
+  artist: string;
+  genre: string;
+  duration: string;
+  cover: string;
+};
 
 type MusicPlayerContextType = {
-    playlist: Song[];
-    currentSong: Song | null;
-    isPlaying: boolean;
-    playSong: (song: Song) => void;
-    togglePlay: () => void;
-    loading: boolean
-}
+  playlist: Song[];
+  currentSong: Song | null;
+  isPlaying: boolean;
+  playNextSong: () => void;
+  playPrevSong: () => void;
+  togglePlay: () => void;
+  loading: boolean;
+  shuffle: boolean;
+  setShuffle: (enabled: boolean) => void;
+};
 
-const MusicPlayerContext = createContext<MusicPlayerContextType | undefined>(undefined);
+const MusicPlayerContext = createContext<MusicPlayerContextType | undefined>(
+  undefined,
+);
 
 export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
-    const { data: playlist, loading } = usePlaylistData();
-    const [currentSong, setCurrentSong] = useState<Song | null>(null);
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const { data: playlist, loading } = usePlaylistData();
+  const [currentSong, setCurrentSong] = useState<Song | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [shuffle, setShuffle] = useState<boolean>(false);
+  const [shuffledPlaylist, setShuffledPlaylist] = useState<Song[]>([]);
 
-    // sets the current song to selection and toggles isPlaying
-    const playSong = (song: Song) => {
-        setCurrentSong(song);
-        setIsPlaying(true);
-    };
 
-    // pauses and toggles isPlaying
-    const togglePlay = () => {
-        setIsPlaying((prev) => !prev);
-    };
+  // shuffle helper func
+  function shuffleArray(array: Song[]): Song[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
 
-    return (
-        <MusicPlayerContext.Provider value={{ loading, currentSong, isPlaying, playSong, togglePlay, playlist }}>
-            {children}
-        </MusicPlayerContext.Provider>
+  useEffect(() => {
+    if (shuffle) {
+      setShuffledPlaylist(shuffleArray(playlist));
+    }
+  }, [shuffle, playlist]);
+
+  // plays next song in order or in shuffled order
+  const playNextSong = () => {
+    if (shuffle) {
+      if (shuffledPlaylist.length === 0) {
+        // reshuffles
+        setShuffledPlaylist(shuffleArray(playlist));
+      }
+      const nextSong = shuffledPlaylist[0];
+      // removes song that was just played from order of new playlst
+      setShuffledPlaylist(shuffledPlaylist.slice(1));
+      setCurrentSong(nextSong);
+      setIsPlaying(true);
+    } else {
+      const currentIndex = playlist.findIndex(
+        (song) => song.id === currentSong?.id,
+      );
+      const nextIndex = (currentIndex + 1) % playlist.length;
+      setCurrentSong(playlist[nextIndex]);
+    }
+  };
+
+  const playPrevSong = () => {
+    const currentIndex = playlist.findIndex(
+      (song) => song.id === currentSong?.id,
     );
+    const prevIndex =
+      currentIndex === 0 ? playlist.length - 1 : currentIndex - 1;
+    setCurrentSong(playlist[prevIndex]);
+  };
+
+  // pauses and toggles isPlaying
+  const togglePlay = () => {
+    setIsPlaying((prev) => !prev);
+  };
+
+  return (
+    <MusicPlayerContext.Provider
+      value={{
+        loading,
+        currentSong,
+        isPlaying,
+        playNextSong,
+        playPrevSong,
+        togglePlay,
+        playlist,
+        shuffle,
+        setShuffle
+      }}
+    >
+      {children}
+    </MusicPlayerContext.Provider>
+  );
 };
 
 export const useMusicPlayer = () => {
-    const context = useContext(MusicPlayerContext);
-    if (!context) {
-        throw new Error('useMusicPlay must be in a MusicPlayerProvider');
-    }
-    return context
-}
+  const context = useContext(MusicPlayerContext);
+  if (!context) {
+    throw new Error("useMusicPlay must be in a MusicPlayerProvider");
+  }
+  return context;
+};

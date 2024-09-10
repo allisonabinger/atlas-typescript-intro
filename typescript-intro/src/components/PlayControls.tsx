@@ -3,7 +3,6 @@ import backwardSVG from "../assets/backward.svg";
 import playSVG from "../assets/play.svg";
 import forwardSVG from "../assets/forward.svg";
 import repeatSVG from "../assets/repeat.svg";
-import repeatOneSVG from "../assets/repeatOne.svg";
 import shuffleSVG from "../assets/shuffle.svg";
 import pauseSVG from "../assets/pause.svg";
 import { useState } from "react";
@@ -15,25 +14,25 @@ function PlayControls() {
   const [playbackMode, setPlaybackMode] = useState("repeat-all");
   const [playbackSVG, setPlaybackSVG] = useState(repeatSVG);
 
-  const { isPlaying, currentSong, playSong, togglePlay } =
-    useMusicPlayer();
-    const { data: playlist } = usePlaylistData();
+  const {
+    isPlaying,
+    currentSong,
+    playNextSong,
+    playPrevSong,
+    togglePlay,
+    shuffle,
+    setShuffle,
+  } = useMusicPlayer();
+  const { data: playlist } = usePlaylistData();
 
   function handlePlaybackToggle() {
-    if (playbackMode === "repeat-all") {
-      setPlaybackMode("repeat-one");
-      setPlaybackSVG(repeatOneSVG);
-    } else if (playbackMode === "repeat-one") {
-      setPlaybackMode("shuffle");
-      setPlaybackSVG(shuffleSVG);
+    if (shuffle) {
+        setShuffle(false);
+        setPlaybackSVG(repeatSVG)
     } else {
-      setPlaybackMode("repeat-all");
-      setPlaybackSVG(repeatSVG);
+        setShuffle(true)
+        setPlaybackSVG(shuffleSVG)
     }
-  }
-
-  function togglePlayStatus() {
-    togglePlay();
   }
 
   function togglePlaybackSpeed() {
@@ -46,20 +45,6 @@ function PlayControls() {
     });
   }
 
-  function playPrevious() {
-    const currentIndex = playlist.findIndex(song => song.id === currentSong?.id);
-    if (currentIndex > 0) {
-        playSong(playlist[currentIndex - 1]);
-    }
-  }
-
-  function playNext() {
-    const currentIndex = playlist.findIndex(song => song.id === currentSong?.id);
-    if (currentIndex >= 0 && currentIndex < playlist.length - 1) {
-        playSong(playlist[currentIndex + 1])
-    }
-  }
-
   return (
     <div className="player-controls mb-4 flex items-center justify-between">
       <button className="btn-playcontrols" onClick={togglePlaybackSpeed}>
@@ -67,17 +52,24 @@ function PlayControls() {
           {playbackSpeed}x
         </span>
       </button>
-      <button className="btn-playcontrols" onClick={playPrevious} disabled={!currentSong || playlist.findIndex(song => song.id === currentSong.id) === 0}>
+      <button
+        className="btn-playcontrols"
+        onClick={playPrevSong}
+        disabled={
+          !currentSong ||
+          playlist.findIndex((song) => song.id === currentSong.id) === 0
+        }
+      >
         <img src={backwardSVG} alt="Reverse Button" className="size-6" />
       </button>
-      <button className="btn-playcontrols" onClick={togglePlayStatus}>
+      <button className="btn-playcontrols" onClick={togglePlay}>
         <img
           src={isPlaying ? pauseSVG : playSVG}
           alt="Play Button"
           className="size-6"
         />
       </button>
-      <button className="btn-playcontrols" onClick={playNext}>
+      <button className="btn-playcontrols" onClick={playNextSong}>
         <img src={forwardSVG} alt="Forward Button" className="size-6" />
       </button>
       <button className="btn-playcontrols" onClick={handlePlaybackToggle}>
