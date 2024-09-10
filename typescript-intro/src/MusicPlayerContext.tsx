@@ -23,6 +23,7 @@ type MusicPlayerContextType = {
   isPlaying: boolean;
   playNextSong: () => void;
   playPrevSong: () => void;
+  playSong: (song: Song) => void;
   togglePlay: () => void;
   loading: boolean;
   shuffle: boolean;
@@ -40,7 +41,6 @@ export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
   const [shuffle, setShuffle] = useState<boolean>(false);
   const [shuffledPlaylist, setShuffledPlaylist] = useState<Song[]>([]);
 
-
   // shuffle helper func
   function shuffleArray(array: Song[]): Song[] {
     const shuffled = [...array];
@@ -52,8 +52,19 @@ export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
   }
 
   useEffect(() => {
-    if (shuffle) {
-      setShuffledPlaylist(shuffleArray(playlist));
+    if (!loading && playlist.length > 0) {
+      if (!shuffle) {
+        setShuffledPlaylist(shuffleArray(playlist));
+        if (!currentSong) {
+          setCurrentSong(shuffledPlaylist[0]);
+          setIsPlaying(true);
+        }
+      } else {
+        if (!currentSong) {
+          setCurrentSong(playlist[0]);
+          setIsPlaying(true);
+        }
+      }
     }
   }, [shuffle, playlist]);
 
@@ -87,6 +98,13 @@ export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
     setCurrentSong(playlist[prevIndex]);
   };
 
+
+  // plays a specific song
+  const playSong = (song: Song) => {
+    setCurrentSong(song);
+    setIsPlaying(true);
+  }
+
   // pauses and toggles isPlaying
   const togglePlay = () => {
     setIsPlaying((prev) => !prev);
@@ -97,13 +115,14 @@ export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
       value={{
         loading,
         currentSong,
+        playSong,
         isPlaying,
         playNextSong,
         playPrevSong,
         togglePlay,
         playlist,
         shuffle,
-        setShuffle
+        setShuffle,
       }}
     >
       {children}

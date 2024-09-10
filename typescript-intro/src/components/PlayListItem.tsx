@@ -3,25 +3,27 @@ import soundbarGIF from "../assets/soundbar.gif"
 
 // PlayList Item Component
 type PlaylistItemProps = {
-  title: string;
-  artist: string;
-  duration: string;
+    song: {
+        title: string;
+        artist: string;
+        duration: string;
+    }
 };
 
-function PlayListItem({ title, artist, duration }: PlaylistItemProps) {
+function PlayListItem({ song }: PlaylistItemProps) {
 
-    const { isPlaying, currentSong } = useMusicPlayer();
+    const { isPlaying, currentSong, playSong } = useMusicPlayer();
 
   return (
-    <div className="w-full mb-2 pr-3 flex justify-between font-medium">
+    <div className="w-full mb-2 pr-3 flex justify-between font-medium" onClick={() => playSong(song)}>
       <div className="wrapper text-left text-sm">
         <div className="text-base flex">
-          {title} {isPlaying && currentSong?.title == title ? <img src={soundbarGIF} width={20} /> : ""}
+          {song.title} {isPlaying && currentSong?.title == song.title ? <img src={soundbarGIF} width={20} /> : ""}
         </div>
-        <div className="text-butterfly-bush-950">{artist}</div>
+        <div className="text-butterfly-bush-950">{song.artist}</div>
       </div>
       <div className="length flex items-center">
-        <div className="text-sm text-butterfly-bush-950">{duration}</div>
+        <div className="text-sm text-butterfly-bush-950">{song.duration}</div>
       </div>
     </div>
   );
