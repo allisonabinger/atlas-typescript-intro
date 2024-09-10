@@ -8,7 +8,9 @@ function VolumeControl() {
   const [muteStatus, setMuteStatus] = useState(false);
   const [lastVolume, setLastVolume] = useState(75);
 
-  function handleVolumeChange(event) {
+  type InputEvent = React.ChangeEvent<HTMLInputElement>
+
+  function handleVolumeChange(event: InputEvent) {
     const newVolume = parseInt(event.target.value);
 
     if (newVolume === 0) {

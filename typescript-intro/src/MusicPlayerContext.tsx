@@ -1,6 +1,6 @@
 // Context for the currently playing song.
-
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { usePlaylistData } from "./hooks/usePlaylistData";
 
 type Song = {
     id: number;
@@ -12,21 +12,20 @@ type Song = {
 }
 
 type MusicPlayerContextType = {
+    playlist: Song[];
     currentSong: Song | null;
     isPlaying: boolean;
     playSong: (song: Song) => void;
     togglePlay: () => void;
-    setCurrentSong: (song: Song | null) => void;
-    playlist: Song[];
-    setPlaylist: (songs: Song[]) => void;
+    loading: boolean
 }
 
 const MusicPlayerContext = createContext<MusicPlayerContextType | undefined>(undefined);
 
 export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
+    const { data: playlist, loading } = usePlaylistData();
     const [currentSong, setCurrentSong] = useState<Song | null>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
-    const [playlist, setPlaylist] = useState<Song[]>([]);
 
     // sets the current song to selection and toggles isPlaying
     const playSong = (song: Song) => {
@@ -40,7 +39,7 @@ export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <MusicPlayerContext.Provider value={{ currentSong, setCurrentSong, isPlaying, playSong, togglePlay, playlist, setPlaylist }}>
+        <MusicPlayerContext.Provider value={{ loading, currentSong, isPlaying, playSong, togglePlay, playlist }}>
             {children}
         </MusicPlayerContext.Provider>
     );

@@ -7,16 +7,16 @@ function Playlist() {
   return (
     <div className="p-8 w-full border-t md:border-l md:border-t-0">
       <h2 className="mb-4 text-lg font-semibold">Playlist</h2>
-      {playlist.map((item) => (
+      {playlist.map((song) => (
         <div
-          key={item.title}
-          onClick={() => playSong(item)}
+          key={song.title}
+          onClick={() => playSong(song)}
           className="cursor-pointer"
         >
           <PlayListItem
-            title={item.title}
-            artist={item.artist}
-            duration={item.duration}
+            title={song.title}
+            artist={song.artist}
+            duration={song.duration}
           />
         </div>
       ))}

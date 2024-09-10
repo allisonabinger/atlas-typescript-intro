@@ -1,8 +1,9 @@
 // Music Player Component
-import { useEffect, useState } from "react";
 import { useMusicPlayer } from "./MusicPlayerContext";
 import CurrentlyPlaying from "./components/CurrentlyPlaying";
 import Playlist from "./components/Playlist";
+import loadingGIF from "./assets/loadingGif.json";
+import { Player } from '@lottiefiles/react-lottie-player';
 
 type Song = {
   id: number;
@@ -14,33 +15,16 @@ type Song = {
 };
 
 export default function MusicPlayer() {
-  const { setCurrentSong, setPlaylist } = useMusicPlayer();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchSongData = async () => {
-      try {
-        const response = await fetch(
-          "https://raw.githubusercontent.com/atlas-jswank/atlas-music-player-api/main/playlist",
-        );
-        const data: Song[] = await response.json();
-        setPlaylist(data);
-        setCurrentSong(data[0]);
-      } catch (error) {
-        console.error("Error fetching song data from API", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSongData();
-  }, [setCurrentSong, setPlaylist]);
+  const { loading, currentSong, playlist } = useMusicPlayer();
 
   return (
     <div>
       {loading ? (
-        <div>Loading...</div>
+        <div className="justify-center mt-8 w-full max-w-4xl ml-auto mr-auto">
+            <Player src={loadingGIF} className="loading" loop autoplay style={{ height: '500px', width: '500px' }}/>
+        </div>
       ) : (
-        <div className="flex flex-col md:flex md:flex-row p-0 justify-center h-full w-full max-w-4xl ml-auto mr-auto overflow-hidden rounded-lg shadow-lg bg-gradient-to-b from-vista-blue-100 to-butterfly-bush-400">
+        <div className="music-player-main">
           <CurrentlyPlaying />
           <Playlist />
         </div>

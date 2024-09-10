@@ -17,7 +17,7 @@ function PlayControls() {
 
   const { isPlaying, currentSong, playSong, togglePlay } =
     useMusicPlayer();
-    const { data: playlist, loading } = usePlaylistData();
+    const { data: playlist } = usePlaylistData();
 
   function handlePlaybackToggle() {
     if (playbackMode === "repeat-all") {

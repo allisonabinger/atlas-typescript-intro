@@ -4,9 +4,16 @@ import SongTitle from "./SongTitle";
 import PlayControls from "./PlayControls";
 import VolumeControl from "./VolumeControl";
 import placeholderImage from "../assets/placeholder.svg"
+import { useEffect } from "react";
 
 function CurrentlyPlaying() {
-    const { currentSong } = useMusicPlayer();
+    const { currentSong, playlist, playSong } = useMusicPlayer();
+
+    useEffect(() => {
+        if(!currentSong) {
+            playSong(playlist[0])
+        }
+    }, [currentSong, playlist, playSong]);
 
 
   return (
