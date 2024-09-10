@@ -2,13 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer components {
-    .btn-playcontrols {
-        @apply inline-flex h-10 w-10 items-center justify-center whitespace-nowrap rounded-md  hover:outline hover:outline-2 hover:outline-vista-blue-600 disabled:opacity-50 disabled:outline-none
-    }
-    .music-player-main {
-        @apply flex flex-col md:flex md:flex-row p-0 justify-center h-full w-full max-w-4xl ml-auto mr-auto overflow-hidden rounded-lg shadow-lg bg-gradient-to-b from-vista-blue-200 to-butterfly-bush-400
-    }
-
+  .btn-playcontrols {
+    @apply inline-flex h-10 w-10 items-center justify-center whitespace-nowrap rounded-md  hover:outline hover:outline-2 hover:outline-vista-blue-600 disabled:opacity-50 disabled:outline-none;
+  }
+  .music-player-main {
+    @apply flex flex-col md:flex md:flex-row p-0 justify-center h-full w-full max-w-4xl ml-auto mr-auto overflow-hidden rounded-lg shadow-lg bg-gradient-to-b from-vista-blue-200 to-butterfly-bush-400;
+  }
 }

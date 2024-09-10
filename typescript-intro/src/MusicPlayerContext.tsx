@@ -98,12 +98,11 @@ export const MusicPlayerProvider = ({ children }: { children: ReactNode }) => {
     setCurrentSong(playlist[prevIndex]);
   };
 
-
   // plays a specific song
   const playSong = (song: Song) => {
     setCurrentSong(song);
     setIsPlaying(true);
-  }
+  };
 
   // pauses and toggles isPlaying
   const togglePlay = () => {

@@ -27,11 +27,11 @@ function PlayControls() {
 
   function handlePlaybackToggle() {
     if (shuffle) {
-        setShuffle(false);
-        setPlaybackSVG(repeatSVG)
+      setShuffle(false);
+      setPlaybackSVG(repeatSVG);
     } else {
-        setShuffle(true)
-        setPlaybackSVG(shuffleSVG)
+      setShuffle(true);
+      setPlaybackSVG(shuffleSVG);
     }
   }
 

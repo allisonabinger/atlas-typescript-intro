@@ -1,9 +1,8 @@
 // Cover Art Component (uses placeholder)
 
 type CovertArtProps = {
-    imageURL: string;
-}
-
+  imageURL: string;
+};
 
 function CoverArt({ imageURL }: CovertArtProps) {
   return (
