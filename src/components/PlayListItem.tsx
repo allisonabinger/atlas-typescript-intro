@@ -4,9 +4,12 @@ import soundbarGIF from "../assets/soundbar.gif";
 // PlayList Item Component
 type PlaylistItemProps = {
   song: {
+    id: number
     title: string;
     artist: string;
     duration: string;
+    genre: string;
+    cover: string;
   };
 };
 

@@ -5,17 +5,9 @@ import Playlist from "./components/Playlist";
 import loadingGIF from "./assets/loadingGif.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 
-type Song = {
-  id: number;
-  title: string;
-  artist: string;
-  genre: string;
-  duration: string;
-  cover: string;
-};
 
 export default function MusicPlayer() {
-  const { loading, currentSong, playlist } = useMusicPlayer();
+  const { loading } = useMusicPlayer();
 
   return (
     <div>
