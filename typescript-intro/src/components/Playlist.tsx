@@ -2,7 +2,7 @@ import { useMusicPlayer } from "../MusicPlayerContext";
 import PlayListItem from "./PlayListItem";
 
 function Playlist() {
-  const { playSong, playlist } = useMusicPlayer();
+  const { playlist } = useMusicPlayer();
 
 
   return (
