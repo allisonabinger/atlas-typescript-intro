@@ -11,7 +11,6 @@ import { usePlaylistData } from "../hooks/usePlaylistData";
 
 function PlayControls() {
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [playbackMode, setPlaybackMode] = useState("repeat-all");
   const [playbackSVG, setPlaybackSVG] = useState(repeatSVG);
 
   const {
